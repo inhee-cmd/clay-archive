@@ -17,12 +17,14 @@
 const p = findP(qs('id')) || PRODUCTS[0];
 document.title = `${p.name} — ${SITE.name}`;
 const sold = p.tag === 'SOLD OUT';
+// 흰 배경 사진 먼저, 그다음 실제 촬영 사진
+const gallery = [...p.cut.map(i => [CS(i), C(i)]), ...p.imgs.map(i => [S(i), L(i)])];
 document.getElementById('pd-root').innerHTML = `
   <p class="crumb"><a href="index.html">HOME</a> / <a href="shop.html">SHOP</a> / <a href="shop.html?c=${p.cat}">${CATS[p.cat]}</a></p>
   <div class="pd">
     <div class="pd-gallery">
-      <div class="pd-thumbs">${p.imgs.map((i, k) => `<button${k ? '' : ' class="on"'} data-i="${i}" aria-label="사진 ${k + 1}"><img src="${S(i)}" alt=""></button>`).join('')}</div>
-      <div class="pd-main">${p.tag ? `<span class="tag${sold ? ' sold' : ''}">${p.tag}</span>` : ''}<img id="mainImg" src="${L(p.imgs[0])}" alt="${p.name}"></div>
+      <div class="pd-thumbs">${gallery.map(([s, l], k) => `<button${k ? '' : ' class="on"'} data-l="${l}" aria-label="사진 ${k + 1}"><img src="${s}" alt=""></button>`).join('')}</div>
+      <div class="pd-main">${p.tag ? `<span class="tag${sold ? ' sold' : ''}">${p.tag}</span>` : ''}<img id="mainImg" src="${gallery[0][1]}" alt="${p.name}"></div>
     </div>
     <div class="pd-info">
       <p class="cat">${CATS[p.cat]}</p>
@@ -70,14 +72,14 @@ document.getElementById('minus').onclick = () => setQ(q - 1);
 document.getElementById('plus').onclick = () => setQ(q + 1);
 document.querySelectorAll('.pd-thumbs button').forEach(b => b.onclick = () => {
   document.querySelectorAll('.pd-thumbs button').forEach(x => x.classList.toggle('on', x === b));
-  document.getElementById('mainImg').src = L(b.dataset.i);
+  document.getElementById('mainImg').src = b.dataset.l;
 });
 const optOk = () => {
   const o = document.getElementById('opt');
   if (o && !o.value) { notice('색상을 골라 주세요', '원통 컵은 네 가지 흙빛 중 하나를 고를 수 있습니다.'); return null; }
   return o ? o.value : '';
 };
-document.getElementById('addCart').onclick = () => { const o = optOk(); if (o === null) return; Cart.add(p.id, o, q); toast(p.imgs[0], p.name + (o ? ` · ${o}` : '')); };
+document.getElementById('addCart').onclick = () => { const o = optOk(); if (o === null) return; Cart.add(p.id, o, q); toast(thumb(p),p.name + (o ? ` · ${o}` : '')); };
 document.getElementById('buyNow').onclick = () => { const o = optOk(); if (o === null) return; Cart.add(p.id, o, q); location.href = 'cart.html'; };
 </script>
 </body>

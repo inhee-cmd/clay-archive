@@ -2,6 +2,9 @@
 const won = n => n.toLocaleString('ko-KR') + '원';
 const L = id => `img/l/${id}.jpg`;
 const S = id => `img/s/${id}.jpg`;
+const C = id => `img/c/${id}.jpg`;
+const CS = id => `img/cs/${id}.jpg`;
+const thumb = p => CS(p.cut[0]);
 const qs = k => new URLSearchParams(location.search).get(k);
 const findP = id => PRODUCTS.find(p => p.id === id);
 
@@ -22,16 +25,16 @@ const Cart = {
 function card(p) {
   const sold = p.tag === 'SOLD OUT';
   return `<a class="item reveal" href="product.html?id=${p.id}">
-    <div class="ph"><img src="${S(p.imgs[0])}" alt="${p.name}" loading="lazy"><img src="${S(p.imgs[1] || p.imgs[0])}" alt="" loading="lazy">
+    <div class="ph"><img src="${thumb(p)}" alt="${p.name}" loading="lazy"><img src="${S(p.imgs[0])}" alt="" loading="lazy">
       ${p.tag ? `<span class="tag${sold ? ' sold' : ''}">${p.tag}</span>` : ''}</div>
     <h3>${p.name}</h3><p class="maker">${SITE.name} · 수작업</p>
     <p class="price">${sold ? `<s>${won(p.price)}</s>품절` : won(p.price)}</p></a>`;
 }
 
-function toast(img, name) {
+function toast(src, name) {
   let t = document.querySelector('.toast');
   if (!t) { t = document.createElement('div'); t.className = 'toast'; document.body.append(t); }
-  t.innerHTML = `<img src="${S(img)}" alt=""><div>${name}<br><span style="color:var(--muted)">장바구니에 담았습니다</span><a href="cart.html">보기</a></div>`;
+  t.innerHTML = `<img src="${src}" alt=""><div>${name}<br><span style="color:var(--muted)">장바구니에 담았습니다</span><a href="cart.html">보기</a></div>`;
   requestAnimationFrame(() => t.classList.add('show'));
   clearTimeout(t.timer); t.timer = setTimeout(() => t.classList.remove('show'), 2600);
 }

@@ -79,7 +79,8 @@ section { padding: 110px var(--pad) 0; }
 .list-bar select { font: inherit; border: 0; background: none; color: var(--ink); cursor: pointer; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 44px 22px; }
 .item { display: block; }
-.item .ph { position: relative; aspect-ratio: 1 / 1.15; overflow: hidden; background: var(--soft); }
+.item .ph { position: relative; aspect-ratio: 1 / 1.15; overflow: hidden; background: #fff; }
+.item .ph img:first-child, .pd-main img, .pd-thumbs img { filter: none; mix-blend-mode: multiply; }
 .item .ph img { transition: transform .8s ease, opacity .5s; }
 .item .ph img + img { position: absolute; inset: 0; opacity: 0; }
 .item:hover .ph img { transform: scale(1.04); }
@@ -95,9 +96,9 @@ section { padding: 110px var(--pad) 0; }
 .pd { display: grid; grid-template-columns: 1.25fr 1fr; gap: clamp(28px, 5vw, 80px); padding: 28px var(--pad) 0; align-items: start; }
 .pd-gallery { display: grid; grid-template-columns: 72px 1fr; gap: 14px; }
 .pd-thumbs { display: flex; flex-direction: column; gap: 10px; }
-.pd-thumbs button { aspect-ratio: 1 / 1.15; overflow: hidden; opacity: .45; transition: opacity .2s; }
+.pd-thumbs button { aspect-ratio: 1 / 1.15; overflow: hidden; opacity: .45; transition: opacity .2s; border: 1px solid var(--line); }
 .pd-thumbs button.on, .pd-thumbs button:hover { opacity: 1; }
-.pd-main { position: relative; aspect-ratio: 1 / 1.15; overflow: hidden; background: var(--soft); }
+.pd-main { position: relative; aspect-ratio: 1 / 1.15; overflow: hidden; background: #fff; border: 1px solid var(--line); }
 .pd-info { position: sticky; top: 110px; }
 .pd-info .cat { font-family: var(--latin); letter-spacing: .2em; color: var(--muted); font-size: 13px; }
 .pd-info h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.2vw, 28px); margin-top: 10px; }
