@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400&family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<title>CART — 흙의 기록</title>
+</head>
+<body data-page="cart">
+<main>
+  <div class="page-hd"><h1>CART</h1><p>장바구니</p></div>
+  <div class="cart-wrap" id="cart"></div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+function draw() {
+  const c = Cart.get().filter(x => findP(x.id));
+  const root = document.getElementById('cart');
+  if (!c.length) {
+    root.style.display = 'block';
+    root.innerHTML = `<p class="empty">장바구니가 비어 있습니다.</p><a class="more" href="shop.html">SHOP</a>`;
+    return;
+  }
+  const sub = c.reduce((s, x) => s + findP(x.id).price * x.qty, 0);
+  const ship = sub >= SITE.freeShip ? 0 : SITE.shipFee;
+  root.innerHTML = `<div>${c.map((x, i) => { const p = findP(x.id); return `
+    <div class="cart-row">
+      <a class="ph" href="product.html?id=${p.id}"><img src="${S(p.imgs[0])}" alt=""></a>
+      <div><h3>${p.name}</h3><p class="o">${x.opt ? '색상 ' + x.opt + ' · ' : ''}${won(p.price)}</p></div>
+      <div class="qty"><button data-i="${i}" data-d="-1" aria-label="빼기">−</button><span>${x.qty}</span><button data-i="${i}" data-d="1" aria-label="더하기">+</button></div>
+      <div class="rp" style="text-align:right">${won(p.price * x.qty)}<br><button class="del" data-del="${i}">삭제</button></div>
+    </div>`; }).join('')}</div>
+    <aside class="summary">
+      <div><span>상품 금액</span><span>${won(sub)}</span></div>
+      <div><span>배송비</span><span>${ship ? won(ship) : '무료'}</span></div>
+      <div class="sum"><span>합계</span><span>${won(sub + ship)}</span></div>
+      <button class="btn dark" style="width:100%" data-soon>주문하기</button>
+      <p>${ship ? `${won(SITE.freeShip - sub)} 더 담으면 무료배송입니다.` : '무료배송이 적용되었습니다.'}</p>
+    </aside>`;
+}
+document.getElementById('cart').addEventListener('click', e => {
+  const c = Cart.get(), b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.del) { c.splice(+b.dataset.del, 1); Cart.set(c); draw(); }
+  if (b.dataset.d) { const x = c[+b.dataset.i]; x.qty = Math.max(1, Math.min(10, x.qty + +b.dataset.d)); Cart.set(c); draw(); }
+});
+draw();
+</script>
+</body>
+</html>

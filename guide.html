@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400&family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<title>GUIDE — 흙의 기록</title>
+</head>
+<body data-page="guide">
+<main>
+  <div class="page-hd"><h1>GUIDE</h1><p>공지 · 문의 · 후기</p></div>
+  <div class="board">
+    <nav class="board-tabs" id="tabs"></nav>
+    <div class="board-list" id="list"></div>
+    <div class="board-foot" id="foot"></div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+const b = ['notice', 'qna', 'review'].includes(qs('b')) ? qs('b') : 'notice';
+document.getElementById('tabs').innerHTML = [['notice', 'NOTICE'], ['qna', 'Q&amp;A'], ['review', 'REVIEW']]
+  .map(([k, v]) => `<a href="guide.html?b=${k}"${k === b ? ' class="on"' : ''}>${v}</a>`).join('');
+const rows = BOARD[b];
+let n = rows.filter(r => !r.pin).length;
+document.getElementById('list').innerHTML = rows.map(r => {
+  const no = r.pin ? '<span class="n pin">공지</span>' : `<span class="n">${n--}</span>`;
+  let title = r.t, body = r.b;
+  if (b === 'qna') {
+    title += `<span class="st${r.done ? ' done' : ''}">${r.done ? '답변완료' : '답변대기'}</span>`;
+    if (r.a) body += `<div class="ans"><b>${SITE.name}</b>${r.a}</div>`;
+  }
+  if (b === 'review') {
+    title = `<span class="stars">${'★'.repeat(r.s)}${'☆'.repeat(5 - r.s)}</span> ${r.t}`;
+    if (r.p) body += `<br><a href="product.html?id=${r.p}" style="text-decoration:underline;color:var(--muted)">${findP(r.p).name}</a>`;
+    if (r.img) body += `<div class="rv-img"><img src="${S(r.img)}" alt=""></div>`;
+  }
+  return `<details><summary>${no}<span>${title}</span><span class="w">${r.w || SITE.name}</span><span class="d">${r.d.slice(2)}</span></summary><div class="body">${body}</div></details>`;
+}).join('');
+document.getElementById('foot').innerHTML = b === 'notice' ? '' : `<button class="btn dark" data-soon>${b === 'qna' ? '문의하기' : '후기 쓰기'}</button>`;
+</script>
+</body>
+</html>
