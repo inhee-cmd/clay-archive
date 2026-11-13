@@ -30,7 +30,7 @@ function draw() {
   const root = document.getElementById('list');
   if (state.view === 'grid') {
     root.className = 'log-grid';
-    root.innerHTML = rows.map(e => `<a class="reveal" href="entry.html?id=${e.id}"><img src="${S(e.id)}" alt="${e.t}" loading="lazy"><span>${dot(e.d)}<b>${e.t}</b></span></a>`).join('');
+    root.innerHTML = rows.map(e => `<a class="reveal" href="entry.html?id=${e.id}" style="flex:${e.r} 1 ${Math.round(e.r * 220)}px;aspect-ratio:${e.r}"><img src="${S(e.id)}" alt="${e.t}" loading="lazy"><span>${dot(e.d)}<b>${e.t}</b></span></a>`).join('');
   } else {
     // 달마다 묶어 보여 준다
     root.className = 'log-list';
@@ -38,7 +38,7 @@ function draw() {
     rows.forEach(e => {
       const m = e.d.slice(0, 7);
       if (m !== month) { month = m; html += `<h2 class="month reveal">${m.replace('-', '.')}</h2>`; }
-      html += `<article class="entry reveal">
+      html += `<article class="entry reveal${e.r < 1 ? ' tall' : ''}">
         <a class="ph" href="entry.html?id=${e.id}"><img src="${L(e.id)}" alt="${e.t}" loading="lazy"></a>
         <div class="txt"><p class="date">${dot(e.d)}</p><h3><a href="entry.html?id=${e.id}">${e.t}</a></h3><p class="note">${e.n}</p></div>
       </article>`;

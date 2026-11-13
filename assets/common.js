@@ -6,8 +6,9 @@ const dot = d => d.replaceAll('-', '.');
 const NEWEST = [...LOG].reverse();
 
 function card(e) {
-  return `<a class="item reveal" href="entry.html?id=${e.id}">
-    <div class="ph"><img src="${S(e.id)}" alt="${e.t}" loading="lazy"></div>
+  // 사진 비율대로 폭을 나눠 세로 사진도 잘리지 않게 한다
+  return `<a class="item reveal" href="entry.html?id=${e.id}" style="flex:${e.r} 1 ${Math.round(e.r * 260)}px">
+    <div class="ph" style="aspect-ratio:${e.r}"><img src="${S(e.id)}" alt="${e.t}" loading="lazy"></div>
     <p class="date">${dot(e.d)}</p><h3>${e.t}</h3></a>`;
 }
 
