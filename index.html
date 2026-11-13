@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400&family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <title>흙의 기록 — 손으로 빚은 그릇</title>
-<meta name="description" content="작업실에서 하나씩 빚어 굽는 그릇과 물레 클래스, 흙의 기록">
+<meta name="description" content="물레로 빚어 두 번 구운 그릇과 작업실의 기록, 흙의 기록">
 </head>
 <body data-page="home">
 <main>
@@ -17,17 +17,17 @@
     <figure><img src="img/l/7756.jpg" alt="청백 찻잔"></figure>
     <figure><img src="img/l/0159.jpg" alt="백자 화병" style="object-position:50% 40%"></figure>
     <div class="cap">
-      <p id="heroSub">NEW ARRIVAL · WINTER 2026</p>
-      <h1 id="heroTxt">손끝에서 시작해<br>식탁에서 완성되는 그릇</h1>
-      <a id="heroLink" href="product.html?id=terracotta-rice-bowl">SHOP NOW</a>
+      <p id="heroSub"></p>
+      <h1 id="heroTxt"></h1>
+      <a id="heroLink" href="works.html">VIEW WORK</a>
     </div>
     <div class="dots" id="dots"><button aria-label="1"></button><button aria-label="2"></button><button aria-label="3"></button></div>
   </div>
 
   <section>
-    <div class="sec-hd reveal"><h2>NEW ARRIVAL</h2><p>이번 가마에서 막 나온 그릇</p></div>
+    <div class="sec-hd reveal"><h2>NEW WORKS</h2><p>이번 가마에서 막 나온 그릇</p></div>
     <div class="grid" id="newGrid"></div>
-    <a class="more" href="shop.html">VIEW ALL</a>
+    <a class="more" href="works.html">ALL WORKS</a>
   </section>
 
   <section class="band reveal">
@@ -35,29 +35,20 @@
     <div class="txt">
       <p class="en">ABOUT</p>
       <h2>흙을 고르고, 물레를 차고,<br>굽을 깎아 두 번 굽습니다</h2>
-      <p class="body">한 점의 그릇이 식탁에 오르기까지 꼬박 3주가 걸립니다. 서두르지 않고, 손이 기억하는 만큼만 만듭니다. 같은 이름의 그릇이라도 조금씩 다른 것은 그 때문입니다.</p>
+      <p class="body">한 점의 그릇이 나오기까지 꼬박 3주가 걸립니다. 서두르지 않고, 손이 기억하는 만큼만 만듭니다. 같은 이름의 그릇이라도 조금씩 다른 것은 그 때문입니다.</p>
       <a class="link" href="about.html">MORE</a>
     </div>
   </section>
 
   <section>
-    <div class="sec-hd reveal"><h2>BEST</h2><p>가장 많이 찾는 그릇</p></div>
-    <div class="grid" id="bestGrid"></div>
+    <div class="sec-hd reveal"><h2>SELECTED</h2><p>오래 곁에 두고 싶은 작품</p></div>
+    <div class="grid" id="selGrid"></div>
   </section>
 
   <section>
     <div class="sec-hd reveal"><h2>ARCHIVE</h2><p>작업실에서 남긴 기록</p></div>
     <div class="journal row" id="jGrid"></div>
     <a class="more" href="archive.html">ALL STORIES</a>
-  </section>
-
-  <section>
-    <div class="sec-hd reveal"><h2>CLASS</h2><p>작업실에서 함께 빚어요 · 예약제</p></div>
-    <div class="klass-home reveal" id="kGrid"></div>
-  </section>
-
-  <section>
-    <div class="guide reveal" id="guide"></div>
   </section>
 
   <section>
@@ -69,23 +60,17 @@
 <script src="assets/data.js"></script>
 <script src="assets/common.js"></script>
 <script>
-const byId = ids => ids.map(findP);
-document.getElementById('newGrid').innerHTML = PRODUCTS.filter(p => p.tag === 'NEW').concat(byId(['cylinder-cup', 'pedestal-bowl'])).map(card).join('');
-document.getElementById('bestGrid').innerHTML = byId(['white-vase', 'rim-plate-set', 'gray-soup-bowl', 'terracotta-pot']).map(card).join('');
+const byId = ids => ids.map(findW);
+document.getElementById('newGrid').innerHTML = WORKS.filter(w => w.tag === 'NEW').concat(byId(['cylinder-cup', 'pedestal-bowl'])).map(card).join('');
+document.getElementById('selGrid').innerHTML = byId(['white-vase', 'rim-plate-set', 'gray-soup-bowl', 'terracotta-pot']).map(card).join('');
 document.getElementById('jGrid').innerHTML = JOURNAL.slice(0, 3).map(j => `<a class="reveal" href="journal.html?id=${j.id}"><div class="ph"><img src="${S(j.cover)}" alt="" loading="lazy"></div><p class="no">No. ${j.id}</p><h3>${j.title}</h3><p>${j.excerpt}</p></a>`).join('');
-document.getElementById('kGrid').innerHTML = CLASSES.map(k => `<a href="class.html#${k.id}"><p class="en">${k.en}</p><h3>${k.name}</h3><p>${k.desc}</p><p class="fee">${k.time} · ${k.fee}</p></a>`).join('');
-const li = (k, rows, f) => `<div><h3>${k} <a href="guide.html?b=${k === 'Q&amp;A' ? 'qna' : k.toLowerCase()}">+</a></h3><ul>${rows.slice(0, 3).map(f).join('')}</ul></div>`;
-document.getElementById('guide').innerHTML =
-  li('NOTICE', BOARD.notice.filter(n => !n.pin), n => `<li><a href="guide.html?b=notice">${n.t}</a><span>${n.d.slice(5)}</span></li>`) +
-  li('Q&amp;A', BOARD.qna, n => `<li><a href="guide.html?b=qna">${n.t}</a><span>${n.d.slice(5)}</span></li>`) +
-  li('REVIEW', BOARD.review, n => `<li><a href="guide.html?b=review">${'★'.repeat(n.s)} ${n.t}</a><span>${n.d.slice(5)}</span></li>`);
 document.getElementById('insta').innerHTML = ['0543', '2101', '8276', '4764', '5319', '6218'].map(i => `<a href="https://instagram.com/${SITE.insta}" target="_blank" rel="noopener"><img src="${S(i)}" alt="" loading="lazy"></a>`).join('');
 
 // 표지 슬라이드
 const slides = [
-  ['NEW ARRIVAL · WINTER 2026', '손끝에서 시작해<br>식탁에서 완성되는 그릇', 'terracotta-rice-bowl'],
-  ['NEW · PALE CELADON', '겨울 신작,<br>청백 찻잔이 나왔습니다', 'celadon-teacup'],
-  ['BEST · VASE', '빈 자리에 놓아도<br>충분한 화병', 'white-vase'],
+  ['NEW WORK · WINTER 2026', '손끝에서 시작해<br>식탁에서 완성되는 그릇', 'terracotta-rice-bowl'],
+  ['NEW WORK · PALE CELADON', '겨울 신작,<br>청백 찻잔', 'celadon-teacup'],
+  ['SELECTED · VASE', '빈 자리에 놓아도<br>충분한 화병', 'white-vase'],
 ];
 const figs = document.querySelectorAll('#hero figure'), dots = document.querySelectorAll('#dots button');
 let cur = 0, timer;
@@ -93,7 +78,7 @@ const go = i => {
   cur = i;
   figs.forEach((f, k) => f.classList.toggle('on', k === i));
   dots.forEach((d, k) => d.classList.toggle('on', k === i));
-  heroSub.textContent = slides[i][0]; heroTxt.innerHTML = slides[i][1]; heroLink.href = 'product.html?id=' + slides[i][2];
+  heroSub.textContent = slides[i][0]; heroTxt.innerHTML = slides[i][1]; heroLink.href = 'work.html?id=' + slides[i][2];
 };
 const run = () => { clearInterval(timer); timer = setInterval(() => go((cur + 1) % figs.length), 5500); };
 dots.forEach((d, k) => d.onclick = () => { go(k); run(); });

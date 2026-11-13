@@ -15,7 +15,7 @@
   <div class="about-lead">
     <p class="en" style="color:var(--muted);letter-spacing:.3em;font-size:13px">ABOUT</p>
     <h2 style="margin-top:18px">손이 기억하는 만큼만<br>천천히 만듭니다</h2>
-    <p>흙의 기록은 작은 물레 작업실입니다. 매일 쓰는 밥공기와 찻잔, 식탁 위에 오래 남을 화병을 만듭니다. 흙을 고르는 일부터 가마 문을 여는 일까지 모두 한 사람의 손을 거칩니다.</p>
+    <p>흙의 기록은 작은 물레 작업실입니다. 매일 쓰는 밥공기와 찻잔, 식탁 위에 오래 남을 화병을 빚습니다. 흙을 고르는 일부터 가마 문을 여는 일까지 모두 한 사람의 손을 거칩니다.</p>
     <p>같은 이름의 그릇이라도 하나도 똑같지 않습니다. 그날의 습도, 가마 안의 자리, 손끝의 힘이 그릇마다 다른 표정을 남깁니다. 그 차이를 지우지 않고 기록하는 것이 이 작업실의 이름이 되었습니다.</p>
   </div>
 
@@ -29,8 +29,8 @@
     </div>
   </section>
 
-  <section>
-    <div class="sec-hd reveal"><h2>VISIT</h2><p>작업실은 예약제로 엽니다</p></div>
+  <section id="contact">
+    <div class="sec-hd reveal"><h2>CONTACT</h2><p>작품 문의와 작업실 방문은 미리 연락 주세요</p></div>
     <div class="visit reveal">
       <div class="ph"><img src="img/l/4769.jpg" alt="작업실 내부" loading="lazy"></div>
       <dl id="visit"></dl>
@@ -41,9 +41,10 @@
 <script src="assets/common.js"></script>
 <script>
 document.getElementById('visit').innerHTML = [
-  ['주소', SITE.addr], ['운영', SITE.hours], ['전화', SITE.tel],
-  ['인스타그램', `<a href="https://instagram.com/${SITE.insta}" target="_blank" rel="noopener">@${SITE.insta}</a>`],
-  ['방문', '쇼룸 방문과 클래스는 예약 후 오실 수 있습니다. 작업 중에는 문을 닫아 두기도 합니다.'],
+  ['이메일', `<a href="mailto:${SITE.email}">${SITE.email}</a>`],
+  ['인스타그램', `<a href="https://instagram.com/${SITE.insta}" target="_blank" rel="noopener">@${SITE.insta}</a> · DM으로 편하게 물어 주세요`],
+  ['작업실', SITE.addr],
+  ['방문', '작업 중에는 문을 닫아 두기도 해서, 오시기 전에 꼭 연락 주세요.'],
 ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 </script>
 </body>
