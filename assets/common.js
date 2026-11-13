@@ -1,21 +1,19 @@
-// 모든 페이지 공통: 머리말·꼬리말·모바일 메뉴·작품 카드
+// 모든 페이지 공통: 머리말·꼬리말·모바일 메뉴·작업일지 카드
 const L = id => `img/l/${id}.jpg`;
 const S = id => `img/s/${id}.jpg`;
-const C = id => `img/c/${id}.jpg`;
-const CS = id => `img/cs/${id}.jpg`;
 const qs = k => new URLSearchParams(location.search).get(k);
-const findW = id => WORKS.find(w => w.id === id);
+const dot = d => d.replaceAll('-', '.');
+const NEWEST = [...LOG].reverse();
 
-function card(w) {
-  return `<a class="item reveal" href="work.html?id=${w.id}">
-    <div class="ph"><img src="${CS(w.cut[0])}" alt="${w.name}" loading="lazy"><img src="${S(w.imgs[0])}" alt="" loading="lazy">
-      ${w.tag ? `<span class="tag">${w.tag}</span>` : ''}</div>
-    <h3>${w.name}</h3><p class="maker">${w.en} · ${w.year}</p></a>`;
+function card(e) {
+  return `<a class="item reveal" href="entry.html?id=${e.id}">
+    <div class="ph"><img src="${S(e.id)}" alt="${e.t}" loading="lazy"></div>
+    <p class="date">${dot(e.d)}</p><h3>${e.t}</h3></a>`;
 }
 
 (function layout() {
   const page = document.body.dataset.page || '';
-  const nav = [['works', 'WORKS', '작품'], ['archive', 'ARCHIVE', '기록'], ['about', 'ABOUT', '소개']];
+  const nav = [['log', 'LOG', '작업일지'], ['about', 'ABOUT', '소개']];
   const ig = `https://instagram.com/${SITE.insta}`;
   document.body.insertAdjacentHTML('afterbegin', `
   <header><div class="hd">
@@ -28,7 +26,7 @@ function card(w) {
     ${nav.map(([k, e, ko]) => `<a href="${k}.html">${e}<small>${ko}</small></a>`).join('')}
     <a href="about.html#contact">CONTACT<small>연락</small></a><a href="${ig}" target="_blank" rel="noopener">INSTAGRAM<small>@${SITE.insta}</small></a></div></div>`);
   document.body.insertAdjacentHTML('beforeend', `<footer>
-    <div><div class="logo">${SITE.name}</div>손으로 빚어 두 번 구운 그릇의 기록</div>
+    <div><div class="logo">${SITE.name}</div>물레 앞에서 보낸 날들의 기록<br>${dot(LOG[0].d)} — ${dot(NEWEST[0].d)} · ${LOG.length}편</div>
     <div><h4>CONTACT</h4><a href="mailto:${SITE.email}">${SITE.email}</a><br><a href="${ig}" target="_blank" rel="noopener">Instagram @${SITE.insta}</a></div>
     <div><h4>STUDIO</h4>${SITE.addr}<br>방문은 미리 연락 주세요<br><br>© ${new Date().getFullYear()} ${SITE.en}</div>
   </footer>`);
@@ -39,7 +37,7 @@ function card(w) {
 })();
 
 function reveal() {
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .08 });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .05 });
   document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
 }
 window.addEventListener('DOMContentLoaded', reveal);

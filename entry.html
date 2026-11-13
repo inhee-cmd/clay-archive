@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400&family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<title>LOG — 흙의 기록</title>
+</head>
+<body data-page="log">
+<main id="root"></main>
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+const i = Math.max(0, LOG.findIndex(e => e.id === qs('id')));
+const e = LOG[i], prev = LOG[i - 1], next = LOG[i + 1];
+document.title = `${e.t} — ${SITE.name}`;
+document.getElementById('root').innerHTML = `
+  <p class="crumb"><a href="index.html">HOME</a> / <a href="log.html">LOG</a></p>
+  <article class="one">
+    <p class="no">No. ${String(i + 1).padStart(2, '0')} / ${LOG.length}</p>
+    <h1>${e.t}</h1>
+    <p class="date">${dot(e.d)}</p>
+    <figure><img src="${L(e.id)}" alt="${e.t}"></figure>
+    <p class="note">${e.n}</p>
+  </article>
+  <nav class="article-nav">
+    ${prev ? `<a href="entry.html?id=${prev.id}"><span>PREV · ${dot(prev.d)}</span>${prev.t}</a>` : '<i></i>'}
+    ${next ? `<a href="entry.html?id=${next.id}" style="text-align:right"><span>NEXT · ${dot(next.d)}</span>${next.t}</a>` : '<i></i>'}
+  </nav>
+  <a class="more" href="log.html">ALL LOGS</a>`;
+// 좌우 방향키로 넘기기
+document.addEventListener('keydown', k => {
+  if (k.key === 'ArrowLeft' && prev) location.href = `entry.html?id=${prev.id}`;
+  if (k.key === 'ArrowRight' && next) location.href = `entry.html?id=${next.id}`;
+});
+</script>
+</body>
+</html>
